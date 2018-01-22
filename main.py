@@ -1,5 +1,6 @@
 import os, pathlib
-import get_tracks
+from db import DB
+import tracks, lyrics, db, analysis
 
 # read .env
 dotenv = pathlib.Path(os.getcwd() + '/.env')
@@ -18,11 +19,8 @@ SPOTIFY_CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
 SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
 GENIUS_API_KEY = os.environ['GENIUS_API_KEY']
 
-# spawn exactly one spotipy instance
-sp = get_tracks.init_spotipy(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
-# start grabbing tracks and features
-sufjan_tracks = get_tracks.get_all_tracks_by_artist(sp, query='sufjan stevens')
-sufjan_features = get_tracks.get_audio_features(sp, sufjan_tracks)
-print(sufjan_features)
-
-# todo: DB interface so we don't have to get this data and spawn it every time
+database = DB()
+sp = tracks.init(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
+sufjan_id, sufjan_name, sufjan_tracks = tracks.get_all_tracks_by_artist(sp, query='sufjan stevens')
+database.set_tracks_for_artist_id(sufjan_id, sufjan_name, sufjan_tracks)
+print(database.get_tracks_by_artist_id(sufjan_id))
