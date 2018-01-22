@@ -1,6 +1,14 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+# TODO: object oriented implementation
+
+class SongMetric:
+    def __init__(self):
+        pass
+
+# working methods below
+
 def init_spotipy(client_id, client_secret):
     # provides a single instance of spotipy for us to use across functions
     if client_id is None:
@@ -8,6 +16,16 @@ def init_spotipy(client_id, client_secret):
     cred_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
     spotipy_interface = spotipy.Spotify(client_credentials_manager=cred_manager)
     return spotipy_interface
+
+# we piggyback off of spotipy's methods here because they all require an id - this allows more generic search queries to be processed
+def process_search_query(sp, query):
+    pass
+
+def get_single_track(sp, query):
+    pass
+
+def get_all_tracks_by_album(sp, query):
+    pass
 
 def get_all_tracks_by_artist(sp, query):
     all_tracks = []
@@ -29,6 +47,7 @@ def get_all_tracks_by_artist(sp, query):
 
     return all_tracks
 
+# TODO: flesh out this feature
 def get_audio_features(sp, tracks):
     features = []
     print(tracks)
@@ -39,3 +58,6 @@ def get_audio_features(sp, tracks):
         audio_feature['name'] = name
         features.append(audio_feature)
     return features
+
+def analyse_track_by_audio_feature(sp, feature, tracks):
+    pass
